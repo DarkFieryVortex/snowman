@@ -4,7 +4,7 @@ describe('The bootstrap', function() {
 		expect(window.$).toBeDefined();
 	});
 
-	it('makes Underscore globally available', function () {
+	it('makes Lodash globally available', function () {
 		expect(window._).toBeDefined();
 	});
 

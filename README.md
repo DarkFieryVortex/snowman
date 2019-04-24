@@ -4,13 +4,13 @@ Snowman is a minimal Twine 2 story format designed for people who already know
 JavaScript and CSS. It's designed to implement basic functionality for playing
 Twine stories and then get out of your way.
 
-Snowman includes [jQuery](http://jquery.com) and [Underscore](http://underscorejs.org/) for you.
+Snowman includes [jQuery](http://jquery.com) and [Lodash](https://lodash.com/) for you.
 
 ## Changes From The Norm
 
-Snowman uses Markdown formatting in its passage syntax. Instead of invoking macros with `<<double angle brackets>>`, it uses Underscore templating to provide interactivity. Specifically, passages are rendered onscreen with this process:
+Snowman uses Markdown formatting in its passage syntax. Instead of invoking macros with `<<double angle brackets>>`, it uses Lodash templating to provide interactivity. Specifically, passages are rendered onscreen with this process:
 
-1. The passage source is run through Underscore's [_.template() method](http://underscorejs.org/#template). Code in `<% blocks %>` receive two special variables:
+1. The passage source is run through Lodash's [_.template() method](https://lodash.com/docs/4.17.11#template). Code in `<% blocks %>` receive two special variables:
 
 	* `s`, which is a shorthand for `window.story.state`
 	* `$`, which acts like jQuery's `$` method but with one exception. If you pass it a single function, this function is run when the passage appears onscreen, with it bound to the passage DOM element.

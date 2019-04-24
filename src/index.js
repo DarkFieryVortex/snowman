@@ -1,7 +1,7 @@
 'use strict';
 /* eslint-disable no-unused-vars */
 var $ = window.$ = window.jQuery = require('jquery');
-var _ = window._ = require('underscore');
+var _ = window._ = require('lodash');
 var marked = window.marked = require('marked');
 var Story = window.Story = require('./story');
 var Passage = window.Passage = require('./passage');

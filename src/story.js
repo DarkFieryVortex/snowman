@@ -8,7 +8,7 @@
 
 'use strict';
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 var LZString = require('lz-string');
 var Passage = require('./passage');
 
@@ -166,7 +166,7 @@ var Story = function(dataEl) {
 	);
 };
 
-_.extend(Story.prototype, {
+_.assignIn(Story.prototype, {
 	/**
 	 Begins playing this story.
 	 @method start
@@ -238,15 +238,15 @@ _.extend(Story.prototype, {
 
 		/* Activate user styles. */
 
-		_.each(this.userStyles, function(style) {
+		_.forEach(this.userStyles, (style) => {
 			this.$el.append('<style>' + style + '</style>');
-		}, this);
+		});
 
 		/* Run user scripts. */
 
-		_.each(this.userScripts, function(script) {
+		_.forEach(this.userScripts, (script) => {
 			eval(script);
-		}, this);
+		});
 
 		/**
 		 Triggered when the story is finished loading, and right before
@@ -281,7 +281,7 @@ _.extend(Story.prototype, {
 			return this.passages[idOrName];
 		}
 		else if (_.isString(idOrName)) {
-			return _.findWhere(this.passages, { name: idOrName });
+			return _.find(this.passages, { name: idOrName });
 		}
 	},
 

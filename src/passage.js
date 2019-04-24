@@ -6,7 +6,7 @@
 **/
 
 'use strict';
-var _ = require('underscore');
+var _ = require('lodash');
 var marked = require('marked');
 var jQuery = require('jquery');
 
@@ -213,10 +213,10 @@ var Passage = function(id, name, tags, source) {
 **/
 Passage.render = render;
 
-_.extend(Passage.prototype, {
+_.assignIn(Passage.prototype, {
 	/**
 	 Returns an HTML-rendered version of this passage's source. This
-	 first runs the source code through the Underscore template parser,
+	 first runs the source code through the Lodash template parser,
 	 then runs the result through a Markdown renderer, and then finally
 	 converts bracketed links to passage links.
 	 @method render

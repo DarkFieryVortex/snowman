@@ -1,20 +1,28 @@
-var cpx = require('cpx');
-var ejs = require('ejs');
-var exec = require('child-process-promise').exec;
-var fs = require('fs');
-var mkdirp = require('mkdirp');
-var pkg = require('../package.json');
-var twine = require('twine-utils');
+// Includes
+const cpx = require('cpx');
+const ejs = require('ejs');
+const exec = require('child-process-promise').exec;
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const pkg = require('../package.json');
 
-var encoding = { encoding: 'utf8' };
+// Constants
+const encoding = { encoding: 'utf8' };
 
-Promise.all([
-	exec('cssnano src/*.css'),
-	exec('browserify -g uglifyify src/index.js', { maxBuffer: Infinity })
-]).then(function(results) {
-	var distPath = 'dist/' + pkg.name.toLowerCase() + '-' + pkg.version;
-	var htmlTemplate = ejs.compile(fs.readFileSync('src/index.ejs', encoding));
-	var formatData = {
+// Config
+const config = require('./' + (process.env.CONFIG_BUILD || 'build-config-release.json'));
+
+const buildSteps = [ exec('cssnano src/*.css') ];
+if(config.minifyJs) {
+	buildSteps.push(exec('browserify -g uglifyify src/index.js', { maxBuffer: Infinity }));
+} else {
+	buildSteps.push(exec('browserify src/index.js', { maxBuffer: Infinity }));
+}
+
+Promise.all(buildSteps).then(function(results) {
+	const distPath = 'dist/' + pkg.name.toLowerCase() + '-' + pkg.version;
+	const htmlTemplate = ejs.compile(fs.readFileSync('src/index.ejs', encoding));
+	const formatData = {
 		author: pkg.author.replace(/ <.*>/, ''),
 		description: pkg.description,
 		image: 'icon.svg',
