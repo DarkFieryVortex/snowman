@@ -6,13 +6,13 @@
  @constructor
 **/
 
-'use strict';
-var $ = require('jquery');
-var _ = require('lodash');
-var LZString = require('lz-string');
-var Passage = require('./passage');
+//'use strict';
+const $ = require('jquery');
+const _ = require('lodash');
+const LZString = require('lz-string');
+const Passage = require('./passage');
 
-var Story = function(dataEl) {
+const Story = function(dataEl) {
 	/* Set up basic properties. */
 
 	this.dataEl = dataEl;
@@ -139,19 +139,6 @@ var Story = function(dataEl) {
 	});
 
 	/**
-	 An array of user-specific scripts to run when the story is begun.
-	 @property userScripts
-	 @type Array
-	**/
-
-	this.userScripts = _.map(
-		dataEl.children('*[type="text/twine-javascript"]'),
-		function(el) {
-			return $(el).html();
-		}
-	);
-
-	/**
 	 An array of user-specific style declarations to add when the story is
 	 begun.
 	 @property userStyles
@@ -240,12 +227,6 @@ _.assignIn(Story.prototype, {
 
 		_.forEach(this.userStyles, (style) => {
 			this.$el.append('<style>' + style + '</style>');
-		});
-
-		/* Run user scripts. */
-
-		_.forEach(this.userScripts, (script) => {
-			eval(script);
 		});
 
 		/**

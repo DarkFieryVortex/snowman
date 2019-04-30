@@ -5,10 +5,15 @@
  @constructor
 **/
 
-'use strict';
-var _ = require('lodash');
-var marked = require('marked');
-var jQuery = require('jquery');
+const $ = require('jquery');
+const _ = require('lodash');
+const marked = require('marked');
+
+// Config
+marked.setOptions({ smartypants: true });
+
+// Validation
+const validTags = [ 'pTitle', 'look' ];
 
 /**
  Our rendering engine. This is available externally as Passage.render(),
@@ -18,71 +23,38 @@ var jQuery = require('jquery');
 **/
 
 function render(source) {
-	/* See below for the definition of readyFunc. */
+	const root = $('<span id="passageRoot"></span>').append($.trim(source));
 
-	var result = _.template(source)({ s: window.story.state, $: readyFunc });
+	// Sanitize
+	const sanitized = root.first('#passageRoot').contents().filter((idx, ele) => {
+		// Keep text nodes.
+		if(ele.nodeType === 3) { return true; }
 
-	/*
-	Transform class, ID, hidden, and link shorthands in HTML tags.
-
-	<a-0.class#id> becomes
-	<a href="javascript:void(0)" style="display: none" class="class" id="id">
-	*/
-
-	result = result.replace(
-		/<([a-z]+)([\.#\-0].*?)(?=[\s>])/gi,
-		function(match, tagName, attrs) {
-			return '<' + tagName + ' ' + renderAttrs(attrs);
-		}
-	);
-
-	/* [[links]] */
-
-	result = result.replace(/\[\[(.*?)\]\]/g, function(match, target) {
-		var display = target;
-
-		/* display|target format */
-
-		var barIndex = target.indexOf('|');
-
-		if (barIndex != -1) {
-			display = target.substr(0, barIndex);
-			target = target.substr(barIndex + 1);
-		}
-		else {
-			/* display->target format */
-
-			var rightArrIndex = target.indexOf('->');
-
-			if (rightArrIndex != -1) {
-				display = target.substr(0, rightArrIndex);
-				target = target.substr(rightArrIndex + 2);
-			}
-			else {
-				/* target<-display format */
-
-				var leftArrIndex = target.indexOf('<-');
-
-				if (leftArrIndex != -1) {
-					display = target.substr(leftArrIndex + 2);
-					target = target.substr(0, leftArrIndex);
-				}
-			}
-		}
-
-		/* Does this look like an external link? */
-
-		if (/^\w+:\/\/\/?\w/i.test(target)) {
-			return '<a href="' + target + '">' + display + '</a>';
-		}
-		else {
-			return '<a href="javascript:void(0)" data-passage="' +
-				_.escape(target) + '">' + display + '</a>';
-		}
+		const $ele = $(ele);
+		return _.some(validTags, (value) => {
+			return $ele.is(value);
+		});
 	});
+	root.empty();
+	root.append(sanitized);
 
-	marked.setOptions({ smartypants: true });
-	return marked(result);
+	// Render <look> tags
+	root.find('look').each((idx, ele) => {
+		let $ele = $(ele);
+		$ele.replaceWith(() => {
+			const desc = $ele.attr('desc');
+			if(desc) {
+				const link = $('<a href="javascript:void(0)" class="lookLink"></a>');
+				link.text($ele.text());
+				link.attr('data-look', desc);
+				return link;
+			} else {
+				return ele;
+			}
+		});
+	})
+
+	return marked(root.html());
 };
 
 /**
