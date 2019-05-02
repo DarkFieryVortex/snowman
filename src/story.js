@@ -1,3 +1,4 @@
+'use strict';
 /**
  An object representing the entire story. After the document has completed
  loading, an instance of this class will be available at `window.story`.

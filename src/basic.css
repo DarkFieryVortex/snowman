@@ -1,5 +1,14 @@
-/* Give ourselves some decent defaults. */
+/* Hide custom tags. */
+title, look, description, choices, choice {
+	display: none;
+}
 
+/* Hide look blocks. */
+.lookBlock {
+	display: none;
+}
+
+/* Give ourselves some decent defaults. */
 body {
 	font: 18px "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: #222;
@@ -31,7 +40,6 @@ tw-storydata {
 }
 
 /* scale font sizes for phones */
-
 @media screen and (max-device-width: 480px) {
 	#passage {
 		font-size: 70%;
