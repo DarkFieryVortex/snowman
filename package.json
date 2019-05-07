@@ -16,7 +16,6 @@
     "jquery": "^3.4.0",
     "lodash": "^4.17.11",
     "lz-string": "^1.4.4",
-    "marked": "^0.6.2",
     "redux": "^4.0.1",
     "uglifyify": "^5.0.1"
   },
