@@ -7,7 +7,7 @@
   "repository": "https://github.com/DarkFieryVortex/snowman",
   "scripts": {
     "clean": "rimraf build/ dist/",
-    "build": "node scripts/build-format.js && node scripts/build-guide.js",
+    "build": "node scripts/build-format.js && node scripts/build-guide.js && if ! [ -z ${TJS_STORY_FORMATS+x} ]; then cp -r dist/snowman-* $TJS_STORY_FORMATS; fi && echo Build completed: `date`",
     "lint": "eslint 'src/**/*.js' || exit 0",
     "start": "onchange -iw 'src/**' 'guide/**' -- npm run build",
     "test": "karma start || exit 0"

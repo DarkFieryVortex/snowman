@@ -166,7 +166,7 @@ _.assignIn(Story.prototype, {
 
 		/* Create an element to show the passage. */
 
-		this.$passageEl = $('<div class="passage" aria-live="polite"></div>');
+		this.$passageEl = $('<div class="passage" class="col-lg" aria-live="polite"></div>');
 		this.$el.append(this.$passageEl);
 
 		/* Set up history event handler. */
